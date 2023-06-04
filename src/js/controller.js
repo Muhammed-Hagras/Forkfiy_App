@@ -28,7 +28,7 @@ const controlRecipes = async function () {
     // recipeContainer.innerHTML = '';
     // recipeContainer.insertAdjacentHTML('afterbegin', markeup);
   } catch (error) {
-    console.log(error);
+    recipeView.renderError();
   }
 };
 
