@@ -29,6 +29,10 @@ class RecipeView {
     parentEl.insertAdjacentHTML('afterbegin', markup);
   };
 
+  addHandlerRender(handler) {
+    ['hashchange', 'load'].forEach(e => window.addEventListener(e, handler));
+  }
+
   #generateMarkup() {
     return `
     <figure class="recipe__fig">
