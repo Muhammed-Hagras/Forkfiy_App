@@ -1,8 +1,13 @@
+import { async } from 'regenerator-runtime';
 import { API_URL } from './config';
 import { getJSON } from './helpers';
 
 export const state = {
   recipe: {},
+  search: {
+    query: '',
+    results: [],
+  },
 };
 
 export const loadRecipe = async function (id) {
@@ -27,3 +32,23 @@ export const loadRecipe = async function (id) {
     throw error;
   }
 };
+
+export const loadSearchResults = async function (query) {
+  state.search.query = query;
+  try {
+    const { data } = await getJSON(`${API_URL}?search=${query}`);
+    state.search.results = data.recipes.map(rec => {
+      return {
+        id: rec.id,
+        title: rec.title,
+        publisher: rec.publisher,
+        image: rec.image_url,
+      };
+    });
+  } catch (error) {
+    console.log(`${error} 💥💥💥 `);
+    throw error;
+  }
+};
+
+// loadSearchResults('pizza');
