@@ -6,13 +6,15 @@ import * as modal from './modal';
 import recipeView from './views/recipeView';
 import searchView from './views/searchView';
 import resultsView from './views/resultsView';
-// import { async } from 'regenerator-runtime';
+import paginationView from './views/paginationView';
+
+import { async } from 'regenerator-runtime';
 
 const recipeContainer = document.querySelector('.recipe');
 
-if (module.hot) {
-  module.hot.accept();
-}
+// if (module.hot) {
+//   module.hot.accept();
+// }
 
 // https://forkify-api.herokuapp.com/v2
 
@@ -47,15 +49,26 @@ const controlSearchResults = async function () {
     if (!query);
     await modal.loadSearchResults(query);
 
-    resultsView.render(modal.state.search.results);
+    resultsView.render(modal.getSearchResultPage());
+
+    //Render initial pagination buttons
+    paginationView.render(modal.state.search);
   } catch (error) {
     console.log(error);
   }
 };
 
+const controlPagination = function (goToPage) {
+  resultsView.render(modal.getSearchResultPage(goToPage));
+
+  //Render New pagination buttons
+  paginationView.render(modal.state.search);
+};
+
 const init = function () {
   recipeView.addHandlerRender(controlRecipes);
   searchView.addHandlerSearch(controlSearchResults);
+  paginationView.addHandlerClick(controlPagination);
 };
 
 init();
