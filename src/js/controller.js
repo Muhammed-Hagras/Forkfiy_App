@@ -34,6 +34,9 @@ const controlRecipes = async function () {
     // 2) Render recipe
     recipeView.render(modal.state.recipe);
 
+    //Test
+    // controlServings();
+
     // recipeContainer.innerHTML = '';
     // recipeContainer.insertAdjacentHTML('afterbegin', markeup);
   } catch (error) {
@@ -60,13 +63,20 @@ const controlSearchResults = async function () {
 
 const controlPagination = function (goToPage) {
   resultsView.render(modal.getSearchResultPage(goToPage));
-
   //Render New pagination buttons
   paginationView.render(modal.state.search);
 };
 
+const controlServings = function (newServings) {
+  //Update the recipe servings(in State)
+  modal.updateServings(newServings);
+  // Update the recipe view
+  recipeView.render(modal.state.recipe);
+};
+
 const init = function () {
   recipeView.addHandlerRender(controlRecipes);
+  recipeView.addHandlerUpdateServings(controlServings);
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerClick(controlPagination);
 };
