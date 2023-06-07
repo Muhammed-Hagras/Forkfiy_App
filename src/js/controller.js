@@ -23,11 +23,13 @@ const recipeContainer = document.querySelector('.recipe');
 const controlRecipes = async function () {
   try {
     const id = window.location.hash.slice(1);
-    if (!id) return;
 
+    if (!id) return;
     //Loading Spinner
     recipeView.renderSpinner();
 
+    //Update results view to mark selected search result
+    resultsView.update(modal.getSearchResultPage());
     // loadRecipe
     await modal.loadRecipe(id);
 
@@ -71,7 +73,8 @@ const controlServings = function (newServings) {
   //Update the recipe servings(in State)
   modal.updateServings(newServings);
   // Update the recipe view
-  recipeView.render(modal.state.recipe);
+  // recipeView.render(modal.state.recipe);
+  recipeView.update(modal.state.recipe);
 };
 
 const init = function () {
