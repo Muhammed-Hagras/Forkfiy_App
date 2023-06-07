@@ -7,7 +7,7 @@ import recipeView from './views/recipeView';
 import searchView from './views/searchView';
 import resultsView from './views/resultsView';
 import paginationView from './views/paginationView';
-
+import bookmarksView from './views/bookmarksView';
 import { async } from 'regenerator-runtime';
 
 const recipeContainer = document.querySelector('.recipe');
@@ -30,6 +30,7 @@ const controlRecipes = async function () {
 
     //Update results view to mark selected search result
     resultsView.update(modal.getSearchResultPage());
+    bookmarksView.update(modal.state.bookmarks);
     // loadRecipe
     await modal.loadRecipe(id);
 
@@ -77,9 +78,22 @@ const controlServings = function (newServings) {
   recipeView.update(modal.state.recipe);
 };
 
+const controlAddBookmark = function () {
+  //Add/remove boookmarks
+  if (!modal.state.recipe.bookmarked) modal.addBookmark(modal.state.recipe);
+  else modal.deleteBookmark(modal.state.recipe.id);
+
+  //Update recipe view
+  recipeView.update(modal.state.recipe);
+
+  //render recipe view
+  bookmarksView.render(modal.state.bookmarks);
+};
+
 const init = function () {
   recipeView.addHandlerRender(controlRecipes);
   recipeView.addHandlerUpdateServings(controlServings);
+  recipeView.addHandlerAddBookmark(controlAddBookmark);
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerClick(controlPagination);
 };
